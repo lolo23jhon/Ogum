@@ -77,9 +77,6 @@
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Engine.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Game.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Gui.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

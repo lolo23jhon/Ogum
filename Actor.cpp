@@ -7,52 +7,54 @@ Actor::Builder Actor::s_builder{};
 ///////////////////////////////s////////////////////// actor::static members /////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////// ACTOR::ACTOR /////////////////////////////////////////////////////////////////
 
-Actor::Actor(const int t_x, const int t_y, const char t_char, const char *t_name, const TCODColor &t_color, const bool t_blocks, const bool t_fov_only)
-    : m_x{t_x}, m_y{t_y},
-      m_char{t_char},
-      m_name{t_name},
-      m_color{t_color},
-      m_blocks{t_blocks},
-      m_fov_only{t_fov_only},
-      m_attacker{nullptr},
-      m_destructible{nullptr},
-      m_ai{nullptr},
-      m_pickable{nullptr},
-      m_container{nullptr} {}
+Actor::Actor(const int t_x, const int t_y, const char t_char, const char* t_name, const TCODColor& t_color, const bool t_blocks, const bool t_fov_only, const bool t_proper_name)
+	: m_x{ t_x },
+	m_y{ t_y },
+	m_char{ t_char },
+	m_name{ t_name },
+	m_color{ t_color },
+	m_blocks{ t_blocks },
+	m_fov_only{ t_fov_only },
+	m_proper_name{ t_proper_name },
+	m_attacker{ nullptr },
+	m_destructible{ nullptr },
+	m_ai{ nullptr },
+	m_pickable{ nullptr },
+	m_container{ nullptr } {}
 
 ///////////////////////////////////////////////////// actor::actor /////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////// ACTOR::~ACTOR /////////////////////////////////////////////////////////////////
 
 Actor::~Actor()
 {
-  if (m_attacker)
-    m_attacker.reset();
+	if (m_attacker)
+		m_attacker.reset();
 
-  if (m_destructible)
-    m_destructible.reset();
+	if (m_destructible)
+		m_destructible.reset();
 
-  if (m_ai)
-    m_ai.reset();
+	if (m_ai)
+		m_ai.reset();
 
-  if (m_pickable)
-    m_pickable.reset();
+	if (m_pickable)
+		m_pickable.reset();
 
-  if (m_container)
-    m_container.reset();
+	if (m_container)
+		m_container.reset();
 }
 
 void Actor::render() const
 {
-  TCODConsole::root->setChar(m_x, m_y, m_char);
-  TCODConsole::root->setCharForeground(m_x, m_y, m_color);
+	TCODConsole::root->setChar(m_x, m_y, m_char);
+	TCODConsole::root->setCharForeground(m_x, m_y, m_color);
 }
 
 void Actor::update()
 {
-  if (m_ai)
-  {
-    m_ai->update(this);
-  }
+	if (m_ai)
+	{
+		m_ai->update(this);
+	}
 }
 
 ///////////////////////////////////////////////////// actor::~actor /////////////////////////////////////////////////////////////////
@@ -60,7 +62,7 @@ void Actor::update()
 
 float Actor::getDistance(const int t_x, const int t_y) const
 {
-  return sqrtf((m_x - t_x) * (m_x - t_x) + (m_y - t_y) * (m_y - t_y));
+	return sqrtf((float)((m_x - t_x) * (m_x - t_x) + (m_y - t_y) * (m_y - t_y)));
 }
 
 ///////////////////////////////////////////////////// actor::getdistance /////////////////////////////////////////////////////////////////
@@ -71,65 +73,70 @@ Actor::Builder::Builder() {}
 ///////////////////////////////////////////////////// actor::builder::builder /////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////// ACTOR::BUILDER::CREATEACTOR /////////////////////////////////////////////////////////////////
 
-Actor::Builder &
-Actor::Builder::createActor(const ActorPreset t_preset, const int t_x, const int t_y)
+Actor::Builder& Actor::Builder::createActor(const ActorPreset t_preset, const int t_x, const int t_y)
 {
-  switch (t_preset)
-  {
-  case ActorPreset::PLAYER:
-  {
-    createActor(t_x, t_y, '@', "player", TCODColor::white, Blocks::YES, FovOnly::YES)
-        .setAttacker(10.0f)
-        .setDestructible<PlayerDestructible>(30.0f, "your corpse", 0)
-        .setAi<PlayerAi>()
-        .setContainer(26);
-    break;
-  } // case PLAYER
-  case ActorPreset::ORC:
-    createActor(t_x, t_y, 'o', "orc", TCODColor::desaturatedGreen, Blocks::YES, FovOnly::NO);
-  };
-}
+	switch (t_preset)
+	{
+	case ActorPreset::PLAYER:
+	{
+		createActor(t_x, t_y, '@', "player", TCODColor::white, true, true)
+			.setAttacker<MeleeAttacker>(DamageType::PHYSICAL, "2d2", "punched")
+			.setDestructible<PlayerDestructible>(30.0f, "your corpse", 0)
+			.setAi<PlayerAi>()
+			.setContainer(26);
 
-Actor::Builder &Actor::Builder::createActor(const int t_x, const int t_y, const char t_char, const char *t_name, const TCODColor &t_color, const Blocks t_blocks, const FovOnly t_fov_only)
+	} break; // case PLAYER
+	case ActorPreset::ORC:
+	{
+		createActor(t_x, t_y, 'o', "orc", TCODColor::desaturatedGreen, true, true)
+			.setAttacker<MeleeAttacker>(DamageType::PHYSICAL, "1d3", "scratched")
+			.setDestructible<MonsterDestructible>(10.0f, "dead orc", 35)
+			.setAi<MonsterAi>();
+
+	} break; // case ORC
+	case ActorPreset::TROLL:
+	{
+		createActor(t_x, t_y, 'T', "troll", TCODColor::desaturatedGreen, true, true)
+			.setAttacker<MeleeAttacker>(DamageType::PHYSICAL, "1d4", "clubed")
+			.setDestructible<MonsterDestructible>(20.0f, "troll carcass", 100)
+			.setAi<MonsterAi>();
+
+	} break; // case TROLL
+	};
+};
+
+
+Actor::Builder& Actor::Builder::createActor(const int t_x, const int t_y, const char t_char, const char* t_name, const TCODColor& t_color, const bool t_blocks, const bool t_fov_only)
 {
-  m_actor_wip = std::make_unique<Actor>(t_x, t_y, t_char, t_name, t_color, t_blocks, t_fov_only);
-  return *this;
+	m_actor_wip = std::make_unique<Actor>(t_x, t_y, t_char, t_name, t_color, t_blocks, t_fov_only);
+	return *this;
 }
 
 ///////////////////////////////////////////////////// actor::builder::createactor /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// ACTOR::BUILDER::SETATTACKER /////////////////////////////////////////////////////////////////
-
-Actor::Builder &Actor::Builder::setAttacker(const float t_power)
-{
-  m_actor_wip->m_attacker = std::make_unique<Attacker>(t_power);
-  return *this;
-}
-
-///////////////////////////////////////////////////// actor::builder::setattacker /////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////// ACTOR::BUILDER::SETCONTAINER /////////////////////////////////////////////////////////////////
 
-Actor::Builder &Actor::Builder::setContainer(const int t_size)
+Actor::Builder& Actor::Builder::setContainer(const int t_size)
 {
-  m_actor_wip->m_container = std::make_unique<Container>(t_size);
-  return *this;
+	m_actor_wip->m_container = std::make_unique<Container>(t_size);
+	return *this;
 }
 
 ///////////////////////////////////////////////////// actor::builder::setcontainer /////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////// ACTOR::BUILDER::BLOCKS /////////////////////////////////////////////////////////////////
 
-Actor::Builder &Actor::Builder::setBlocks(const bool t_blocks)
+Actor::Builder& Actor::Builder::setBlocks(const bool t_blocks)
 {
-  m_actor_wip->m_blocks = t_blocks;
-  return *this;
+	m_actor_wip->m_blocks = t_blocks;
+	return *this;
 }
 
 ///////////////////////////////////////////////////// actor::builder::blocks /////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////// ACTOR::BUILDER::FOVONLY /////////////////////////////////////////////////////////////////
 
-Actor::Builder &Actor::Builder::setFovOnly(const bool t_fov_only)
+Actor::Builder& Actor::Builder::setFovOnly(const bool t_fov_only)
 {
-  m_actor_wip->m_fov_only = t_fov_only;
-  return *this;
+	m_actor_wip->m_fov_only = t_fov_only;
+	return *this;
 }
 
 ///////////////////////////////////////////////////// actor::builder::fovonly /////////////////////////////////////////////////////////////////
@@ -137,7 +144,7 @@ Actor::Builder &Actor::Builder::setFovOnly(const bool t_fov_only)
 
 std::unique_ptr<Actor> Actor::Builder::build()
 {
-  return std::move(m_actor_wip);
+	return std::move(m_actor_wip);
 }
 
 ///////////////////////////////////////////////////// actor::builder::build /////////////////////////////////////////////////////////////////

@@ -14,3 +14,10 @@ class Actor;
 #include "Map.hpp"
 #include "Gui.hpp"
 #include "Engine.hpp"
+
+namespace COL{
+
+constexpr const TCODColor& PLAYER_MSG_COLOR{ TCODColor::red };
+constexpr const TCODColor& NORMAL_MSG_COLOR{ TCODColor::lightGrey };
+
+};

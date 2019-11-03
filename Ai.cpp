@@ -85,6 +85,10 @@ void PlayerAi::update(Actor *t_owner)
         case Menu::MenuItemCode::AGILITY:
             t_owner->m_destructible->m_defense += 1;
             break;
+		case Menu::MenuItemCode::NONE:
+		case Menu::MenuItemCode::NEW_GAME:
+		case Menu::MenuItemCode::CONTINUE:
+		case Menu::MenuItemCode::EXIT:
         default:
             break;
         };
@@ -274,7 +278,7 @@ Actor *PlayerAi::chooseFromInventory(Actor *t_owner)
     if (key.vk == TCODK_CHAR)
     {
         // Subtract the entered letter with the starting symbol (a) to get the correct index
-        int itemIndex{key.c - 'a'};
+        unsigned int itemIndex{key.c - 'a'};
         if (itemIndex >= 0 && itemIndex < t_owner->m_container->m_inventory.size())
         {
             return t_owner->m_container->m_inventory[itemIndex].get();
@@ -334,7 +338,7 @@ bool PlayerAi::moveOrAttack(Actor *t_owner, const int t_target_x, const int t_ta
 
 void PlayerAi::wait(const unsigned int t_num_turns)
 {
-    for (int i{0}; i < t_num_turns; i++)
+    for (unsigned int i{0}; i < t_num_turns; i++)
     {
         Engine::s_engine->m_game_status = Engine::GAME_STATUS::NEW_TURN;
     }
@@ -389,7 +393,7 @@ void MonsterAi::moveOrAttack(Actor *t_owner, const int t_target_x, const int t_t
     int dy{t_target_y - t_owner->m_y};
     int step_dx{dx > 0 ? 1 : -1};
     int step_dy{dy > 0 ? 1 : -1};
-    float distance{sqrtf(dx * dx + dy * dy)};
+    float distance{sqrtf((float)(dx * dx + dy * dy))};
 
     if (distance >= 2)
     {

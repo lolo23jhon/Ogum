@@ -42,7 +42,7 @@ void Gui::render()
     PlayerAi *p_ai{dynamic_cast<PlayerAi *>(Engine::s_engine->m_player->m_ai.get())};
     char xpTxt[128];
     sprintf(xpTxt, "XP(%d)", p_ai->m_xp_lvl);
-    renderBar(1, 5, BAR_WIDTH, xpTxt, Engine::s_engine->m_player->m_destructible->m_xp, p_ai->getNextLevel(), TCODColor::lightViolet, TCODColor::darkViolet);
+    renderBar(1, 5, BAR_WIDTH, xpTxt, (float)Engine::s_engine->m_player->m_destructible->m_xp, (float)p_ai->getNextLevel(), TCODColor::lightViolet, TCODColor::darkViolet);
 
     // Draw the message log
     int y{1};

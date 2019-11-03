@@ -21,7 +21,7 @@ static bool isOne(const int t_x)
 
 static float distance(const int t_x1, const int t_y1, const int t_x2, const int t_y2)
 {
-    return sqrtf(powf(t_x2 - t_x1, 2) + powf(t_y2 - t_y1, 2));
+    return sqrtf(powf((float)(t_x2 - t_x1), 2.0f) + powf((float)(t_y2 - t_y1), 2.0f));
 }
 
 }; // namespace utl
