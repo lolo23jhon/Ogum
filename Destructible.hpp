@@ -1,10 +1,7 @@
 #ifndef DESCTRUCTIBLE_HPP
 #define DESTRUCTIBLE_HPP
-#include <string>
-#include <unordered_map>
 
-class Engine;
-class Actor;
+
 class Destructible : public Persistent
 {
 public:
@@ -18,13 +15,13 @@ public:
 	Destructible(const float t_max_hp,
 		const char* t_corpse_name,
 		const int t_xp,
-		const std::array<const float, (int)DamageType::TRUE>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
-		const std::array<const float, (int)DamageType::TRUE>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f });
+		const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
+		const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f });
 
 	Destructible& setFlatResistance(const DamageType t_dmg_type, const float t_flat);
-	Destructible& setFlatResistance(const std::array<const float, (int)DamageType::TRUE>& t_flat_list);
+	Destructible& setFlatResistance(const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_flat_list);
 	Destructible& setMultResistance(const DamageType t_dmg_type, const float t_mult);
-	Destructible& setMultResistance(const std::array<const float, (int)DamageType::TRUE>& t_mult_list);
+	Destructible& setMultResistance(const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_list);
 	float takeDamage(Actor* t_owner, const DamageType t_damage_type, float t_damage);
 	inline bool isDead() { return m_hp <= 0; }
 	virtual void die(Actor* t_owner);
@@ -60,8 +57,8 @@ public:
 	PlayerDestructible(const float t_max_hp,
 		const char* t_corpse_name,
 		const int t_xp,
-		const std::array<const float, (int)DamageType::TRUE>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
-		const std::array<const float, (int)DamageType::TRUE>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f });
+		const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
+		const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f });
 	void die(Actor* t_owner);
 	void save(TCODZip& t_zip);
 };

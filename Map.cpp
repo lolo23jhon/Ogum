@@ -1,6 +1,5 @@
 #include "main.hpp"
 
-///////////////////////////////////////////////////// BSPLISTENER::VISITNODE /////////////////////////////////////////////////////////////////
 
 bool BspListener::visitNode(TCODBsp *t_node, void *t_userData)
 {
@@ -29,21 +28,15 @@ bool BspListener::visitNode(TCODBsp *t_node, void *t_userData)
     return true;
 }
 
-///////////////////////////////////////////////////// bsplistener::visitnode /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// STATICS /////////////////////////////////////////////////////////////////
 
 static const int MAX_ROOM_ITEMS{2};
 
-///////////////////////////////////////////////////// statics /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::MAP /////////////////////////////////////////////////////////////////
 
 Map::Map(const int t_width, const int t_height) : m_width{t_width}, m_height{t_height}
 {
     m_rng_seed = TCODRandom::getInstance()->getInt(0, 0x7FFFFFFF);
 }
 
-///////////////////////////////////////////////////// map::map/////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::INIT /////////////////////////////////////////////////////////////////
 
 void Map::init(const bool t_withActors)
 {
@@ -56,16 +49,12 @@ void Map::init(const bool t_withActors)
     bsp.traverseInvertedLevelOrder(&listener, (void *)t_withActors);
 }
 
-///////////////////////////////////////////////////// map::init /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::ISWALL /////////////////////////////////////////////////////////////////
 
 bool Map::isWall(const int t_x, const int t_y) const
 {
     return !m_tcod_map->isWalkable(t_x, t_y);
 }
 
-///////////////////////////////////////////////////// map::iswall /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::CANWALK /////////////////////////////////////////////////////////////////
 
 bool Map::canWalk(const int t_x, const int t_y) const
 {
@@ -87,16 +76,12 @@ bool Map::canWalk(const int t_x, const int t_y) const
     return true;
 }
 
-///////////////////////////////////////////////////// map::canwalk /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::ISEXPLORED /////////////////////////////////////////////////////////////////
 
 bool Map::isExplored(const int t_x, const int t_y) const
 {
     return m_tiles[t_y * m_width + t_x].m_explored;
 }
 
-///////////////////////////////////////////////////// map::isexplored /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::ISINFOV /////////////////////////////////////////////////////////////////
 
 bool Map::isInFov(const int t_x, const int t_y) const
 {
@@ -113,16 +98,12 @@ bool Map::isInFov(const int t_x, const int t_y) const
     return false;
 }
 
-///////////////////////////////////////////////////// map::isinfov /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::COMPUTEFOV /////////////////////////////////////////////////////////////////
 
 void Map::computeFov() const
 {
     m_tcod_map->computeFov(Engine::s_engine->m_player->m_x, Engine::s_engine->m_player->m_y, Engine::s_engine->m_fovRadius);
 }
 
-///////////////////////////////////////////////////// map::computefov /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::RENDER /////////////////////////////////////////////////////////////////
 
 void Map::render() const
 {
@@ -147,8 +128,6 @@ void Map::render() const
     }
 }
 
-///////////////////////////////////////////////////// map::render /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::DIG /////////////////////////////////////////////////////////////////
 
 void Map::dig(int t_x1, int t_y1, int t_x2, int t_y2)
 {
@@ -178,8 +157,6 @@ void Map::dig(int t_x1, int t_y1, int t_x2, int t_y2)
 #endif
 }
 
-///////////////////////////////////////////////////// map::dig /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::CREATEROOM /////////////////////////////////////////////////////////////////
 
 void Map::createRoom(const bool t_first, const int t_x1, const int t_y1, const int t_x2, const int t_y2, const bool t_withActors)
 {
@@ -232,8 +209,6 @@ void Map::createRoom(const bool t_first, const int t_x1, const int t_y1, const i
     }
 }
 
-///////////////////////////////////////////////////// map::createroom /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::ADDMONSTER /////////////////////////////////////////////////////////////////
 
 void Map::addMonster(const int t_x, const int t_y)
 {
@@ -243,25 +218,15 @@ void Map::addMonster(const int t_x, const int t_y)
     if (rng->getInt(0, 100) < 80)
     {
         // Create an orc 80% of the time
-        Engine::s_engine->m_actors.emplace_back(Actor::s_builder.createActor(t_x, t_y, 'o', "orc", TCODColor::desaturatedGreen)
-                                                    .setDesctrucible<MonsterDestructible>(10.0f, 0.0f, "dead orc", 35)
-                                                    .setAttacker(3.0f)
-                                                    .setAi<MonsterAi>()
-                                                    .build());
+		Engine::spawActorPreset(t_x, t_y, ActorPreset::ORC);
     }
     else
     {
         // Create a troll 20% of the time
-        Engine::s_engine->m_actors.emplace_back(Actor::s_builder.createActor(t_x, t_y, 'T', "troll", TCODColor::desaturatedGreen)
-                                                    .setDesctrucible<MonsterDestructible>(16.0f, 1.0f, "troll carcass", 100)
-                                                    .setAttacker(3.0f)
-                                                    .setAi<MonsterAi>()
-                                                    .build());
+		Engine::spawActorPreset(t_x, t_y, ActorPreset::TROLL);
     }
 }
 
-///////////////////////////////////////////////////// map::addmonster /////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////// MAP::ADDITEM /////////////////////////////////////////////////////////////////
 
 void Map::addItem(const int t_x, const int t_y)
 {
@@ -273,29 +238,28 @@ void Map::addItem(const int t_x, const int t_y)
         // Add a health potion
         Engine::s_engine->m_actors.emplace_back(Actor::s_builder.createActor(t_x, t_y, '!', "health potion", TCODColor::violet)
                                                     .setPickable<Healer>(4.0f)
-                                                    .build());
+                                                    .construct());
     }
     else if (dice < 70 + 10) // 10%
     {
         // Create a lighting scroll
         Engine::s_engine->m_actors.emplace_back(Actor::s_builder.createActor(t_x, t_y, '#', "scroll of lighting bolt", TCODColor::lightYellow)
                                                     .setPickable<LightingBolt>(5.0f, 20.0f)
-                                                    .build());
+                                                    .construct());
     }
     else if (dice < 70 + 10 + 10) // 10%
     {
         // Create a fireball scroll
         Engine::s_engine->m_actors.emplace_back(Actor::s_builder.createActor(t_x, t_y, '#', "scroll of fire ball", TCODColor::lightYellow)
                                                     .setPickable<FireBall>(3.0f, 12.0f)
-                                                    .build());
+                                                    .construct());
     }
     else // 10%
     {
         // Create a confusion scroll
         Engine::s_engine->m_actors.emplace_back(Actor::s_builder.createActor(t_x, t_y, '#', "scroll of confusion", TCODColor::lightYellow)
                                                     .setPickable<Confuser>(10, 8.0f)
-                                                    .build());
+                                                    .construct());
     }
 }
 
-///////////////////////////////////////////////////// map::additem /////////////////////////////////////////////////////////////////

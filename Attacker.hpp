@@ -1,17 +1,7 @@
 #ifndef ATTACKER_HPP
 #define ATTACKER_HPP
-#include <map>
 
 
-enum class DamageType
-{
-	PHYSICAL,
-	HEAT,
-	COLD,
-	ELECTRIC,
-	TRUE
-};
-class Actor;
 
 class Attacker
 {

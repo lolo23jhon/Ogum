@@ -1,8 +1,6 @@
 #ifndef AI_HPP
 #define AI_HPP
-#include <unordered_map>
 
-class Actor;
 
 class Ai : public Persistent
 {

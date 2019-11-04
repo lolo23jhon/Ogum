@@ -1,6 +1,5 @@
 #include "main.hpp"
-#include <string.h>
-#include <iterator>
+
 
 //================================================== MAP ==================================================//
 
@@ -394,12 +393,12 @@ void Engine::load(const bool t_pause)
         m_map->load(zip);
 
         // Load player
-        m_actors.emplace_back(Actor::s_builder.createActor(0, 0, 0, "", TCODColor::white).build());
+        m_actors.emplace_back(Actor::s_builder.createActor(0, 0, 0, "", TCODColor::white).construct());
         m_player = m_actors.back().get();
         m_player->load(zip);
 
         // Load stairs
-        m_actors.emplace_back(Actor::s_builder.createActor(0, 0, 0, "", TCODColor::white).build());
+        m_actors.emplace_back(Actor::s_builder.createActor(0, 0, 0, "", TCODColor::white).construct());
         m_stairs = m_actors.back().get();
         m_stairs->load(zip);
 
@@ -408,7 +407,7 @@ void Engine::load(const bool t_pause)
         while (num_actors > 0)
         {
             // Create dummies
-            m_actors.emplace_back(Actor::s_builder.createActor(0, 0, 0, "", TCODColor::white).build());
+            m_actors.emplace_back(Actor::s_builder.createActor(0, 0, 0, "", TCODColor::white).construct());
             m_actors.back()->load(zip);
             num_actors--;
         }

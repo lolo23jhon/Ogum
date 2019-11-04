@@ -76,19 +76,15 @@ void PlayerAi::update(Actor *t_owner)
         switch (menuItem)
         {
         case Menu::MenuItemCode::CONSTITUTION:
-            t_owner->m_destructible->m_max_hp += 20;
-            t_owner->m_destructible->m_hp += 20;
+           // t_owner->m_destructible->m_max_hp += 20;
+           // t_owner->m_destructible->m_hp += 20;
             break;
         case Menu::MenuItemCode::STRENGTH:
-            t_owner->m_attacker->m_power += 1;
+           // t_owner->m_attacker->m_power += 1;
             break;
         case Menu::MenuItemCode::AGILITY:
-            t_owner->m_destructible->m_defense += 1;
+           // t_owner->m_destructible->m_defense += 1;
             break;
-		case Menu::MenuItemCode::NONE:
-		case Menu::MenuItemCode::NEW_GAME:
-		case Menu::MenuItemCode::CONTINUE:
-		case Menu::MenuItemCode::EXIT:
         default:
             break;
         };

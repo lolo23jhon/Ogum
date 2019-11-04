@@ -1,8 +1,40 @@
+#ifndef MAIN_HPP
+#define MAIN_HPP
+
+namespace COL {
+
+	constexpr const TCODColor& PLAYER_MSG_COLOR{ TCODColor::red };
+	constexpr const TCODColor& NORMAL_MSG_COLOR{ TCODColor::lightGrey };
+
+};
+
+enum class DamageType
+{
+	PHYSICAL,
+	HEAT,
+	COLD,
+	ELECTRIC,
+	MAX_DAMAGE_TYPES
+};
+
+#include <map>
+#include <string>
+#include <unordered_map>
+#include <string.h>
+#include <iterator>
+#include <array>
+#include <vector>
+#include <algorithm>
+#include <stdio.h>
+#include <string.h>
+#include <windows.h>
+#pragma comment(lib, "user32.lib")
+
+
 #include "PreprocessorDirectives.hpp"
 #include "libtcod.hpp"
 class Actor;
 #include "Persistent.hpp"
-#include "utl.hpp"
 #include "Destructible.hpp"
 #include "Attacker.hpp"
 #include "Ai.hpp"
@@ -15,9 +47,6 @@ class Actor;
 #include "Gui.hpp"
 #include "Engine.hpp"
 
-namespace COL{
 
-constexpr const TCODColor& PLAYER_MSG_COLOR{ TCODColor::red };
-constexpr const TCODColor& NORMAL_MSG_COLOR{ TCODColor::lightGrey };
 
-};
+#endif

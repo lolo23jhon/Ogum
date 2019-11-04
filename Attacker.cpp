@@ -1,5 +1,4 @@
 #include "main.hpp"
-#include <sstream>
 
 
 Attacker::Attacker(const DamageType t_damage_type, const char* t_dice, const char* t_verb)

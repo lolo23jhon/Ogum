@@ -1,12 +1,6 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
-#include <vector>
-#include <memory>
-#include "Actor.hpp"
-#include "Map.hpp"
 
-class Actor;
-class Gui;
 
 class Engine
 {
@@ -61,6 +55,8 @@ public:
 		msg[0] = toupper(msg[0]);
 		m_gui->message(t_color,msg.c_str(),t_args);
 	}
+
+	static void spawActorPreset(const int t_x, const int t_y, const ActorPreset t_actor_preset);
 };
 
 #endif

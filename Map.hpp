@@ -1,12 +1,6 @@
 #ifndef MAP_GEN_HPP
 #define MAP_GEN_HPP
-#include <vector>
-#include <memory>
-#include "libtcod/bsp.hpp"
-#include "libtcod/fov.hpp"
 
-class Engine;
-class Map;
 
 static const int ROOM_MAX_SIZE{12};
 static const int ROOM_MIN_SIZE{6};
