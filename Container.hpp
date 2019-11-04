@@ -8,7 +8,7 @@ class Actor;
 class Container : public Persistent
 {
 public:
-    unsigned int m_size; // Unlimited if 0
+    int m_size; // Unlimited if 0
     std::vector<std::unique_ptr<Actor>> m_inventory;
 
     Container(const int t_size);

@@ -45,8 +45,8 @@ public:
 	MonsterDestructible(const float t_max_hp,
 		const char* t_corpse_name,
 		const int t_xp,
-		const std::array<const float, (int)DamageType::TRUE>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
-		const std::array<const float, (int)DamageType::TRUE>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f });
+		const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
+		const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f });
 	void die(Actor* t_owner);
 	void save(TCODZip& t_zip);
 };

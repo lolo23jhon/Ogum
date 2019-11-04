@@ -4,7 +4,7 @@
 Actor::Builder Actor::s_builder{};
 
 
-Actor::Actor(const int t_x, const int t_y, const char t_char, const char* t_name, const TCODColor& t_color, const bool t_blocks, const bool t_fov_only, const bool t_proper_name)
+Actor::Actor(const int t_x, const int t_y, const char t_char, const char* t_name, const TCODColor& t_color, const bool t_blocks, const bool t_fov_only, const bool t_proper_noun)
 	: m_x{ t_x },
 	m_y{ t_y },
 	m_char{ t_char },
@@ -12,7 +12,7 @@ Actor::Actor(const int t_x, const int t_y, const char t_char, const char* t_name
 	m_color{ t_color },
 	m_blocks{ t_blocks },
 	m_fov_only{ t_fov_only },
-	m_proper_name{ t_proper_name },
+	m_proper_noun{ t_proper_noun },
 	m_attacker{ nullptr },
 	m_destructible{ nullptr },
 	m_ai{ nullptr },
@@ -20,23 +20,6 @@ Actor::Actor(const int t_x, const int t_y, const char t_char, const char* t_name
 	m_container{ nullptr } {}
 
 
-Actor::~Actor()
-{
-	if (m_attacker)
-		m_attacker.reset();
-
-	if (m_destructible)
-		m_destructible.reset();
-
-	if (m_ai)
-		m_ai.reset();
-
-	if (m_pickable)
-		m_pickable.reset();
-
-	if (m_container)
-		m_container.reset();
-}
 
 void Actor::render() const
 {
@@ -92,6 +75,8 @@ Actor::Builder& Actor::Builder::createActor( const int t_x, const int t_y, const
 
 	} break; // case TROLL
 	};
+
+	return *this;
 };
 
 

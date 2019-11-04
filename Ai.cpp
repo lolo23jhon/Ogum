@@ -259,7 +259,7 @@ Actor *PlayerAi::chooseFromInventory(Actor *t_owner)
     int y{1};
     for (auto it_item{t_owner->m_container->m_inventory.begin()}; it_item < t_owner->m_container->m_inventory.end(); it_item++)
     {
-        con.print(2, y, "(%c) %s", shorcut, (*it_item)->m_name.c_str());
+        con.printf(2, y, "(%c) %s", shorcut, (*it_item)->m_name.c_str());
         y++;
         shorcut++;
     }
@@ -274,7 +274,7 @@ Actor *PlayerAi::chooseFromInventory(Actor *t_owner)
     if (key.vk == TCODK_CHAR)
     {
         // Subtract the entered letter with the starting symbol (a) to get the correct index
-        unsigned int itemIndex{key.c - 'a'};
+         int itemIndex{key.c - 'a'};
         if (itemIndex >= 0 && itemIndex < t_owner->m_container->m_inventory.size())
         {
             return t_owner->m_container->m_inventory[itemIndex].get();
@@ -320,7 +320,7 @@ bool PlayerAi::moveOrAttack(Actor *t_owner, const int t_target_x, const int t_ta
         {
             Engine::s_engine->m_gui->message(TCODColor::lightGrey,
                                              "There is a%s %s here.",
-                                             utl::startsVowel((*it_actor)->m_name) ? "n" : "",
+                                             utils::startsVowel((*it_actor)->m_name) ? "n" : "",
                                              (*it_actor)->m_name.c_str());
         }
     }

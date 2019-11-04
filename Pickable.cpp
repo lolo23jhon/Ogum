@@ -110,7 +110,7 @@ bool LightingBolt::use(Actor *t_owner, Actor *t_user)
     }
     // Hit closest monster for damage
     Engine::s_engine->m_gui->message(TCODColor::lightBlue, "A lighting bolt strikes the %s with a loud thunder!\nThe damage is %g hit points.", closestMonster->m_name.c_str(), m_damage);
-    closestMonster->m_destructible->takeDamage(closestMonster, m_damage);
+    closestMonster->m_destructible->takeDamage(closestMonster, DamageType::ELECTRIC,m_damage);
 
     return Pickable::use(t_owner, t_user);
 }
@@ -138,7 +138,7 @@ bool FireBall::use(Actor *t_owner, Actor *t_user)
         if ((*it_actor)->m_destructible && !(*it_actor)->m_destructible->isDead() && (*it_actor)->getDistance(x, y) <= m_range)
         {
             Engine::s_engine->m_gui->message(TCODColor::orange, "The %s gets burned for %g hit points.", (*it_actor)->m_name.c_str(), m_damage);
-            (*it_actor)->m_destructible->takeDamage((*it_actor).get(), m_damage);
+			(*it_actor)->m_destructible->takeDamage((*it_actor).get(), DamageType::HEAT, m_damage);
         }
     }
     return Pickable::use(t_owner, t_user);

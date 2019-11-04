@@ -50,7 +50,7 @@
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Pickable.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\PreprocessorDirectives.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\TargetSelector.hpp" />
-    <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\utl.hpp" />
+    <ClInclude Include="Utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="..\..\..\..\sam%27s club\source\repos\Ogum\resource.res" />

@@ -1,9 +1,9 @@
-#ifndef utl_HPP
-#define utl_HPP
+#ifndef UTILITIES_HPP
+#define UTILITIES_HPP
 #include <string>
 #include <math.h>
 
-namespace utl
+namespace utils
 {
 
 // Checks of a word starts with a vowel
@@ -24,5 +24,10 @@ static float distance(const int t_x1, const int t_y1, const int t_x2, const int 
     return sqrtf(powf((float)(t_x2 - t_x1), 2.0f) + powf((float)(t_y2 - t_y1), 2.0f));
 }
 
-}; // namespace utl
+static bool fexists(const char* t_fileName) {
+	std::ifstream ifile(t_fileName);
+	return (bool)ifile;
+}
+
+}; // namespace utils
 #endif

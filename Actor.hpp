@@ -1,17 +1,6 @@
 #ifndef ACTOR_HPP
 #define ACTOR_HPP
 
-// Actor: anything other than a tile with a position and a char.
-
-class Engine;
-
-class Attacker;
-class Destructible;
-class Ai;
-class Pickable;
-class Container;
-
-enum class ActorPreset { PLAYER, ORC, TROLL };
 
 class Actor : public Persistent {
 public:
@@ -39,9 +28,9 @@ public:
 		Builder& setDestructible(const float t_max_hp,
 			const char* t_corpse_name,
 			const int t_xp,
-			const std::array<const float, (int)DamageType::TRUE>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
-			const std::array<const float, (int)DamageType::TRUE>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f }) {
-			m_actor_wip->m_destructible = std::make_unique<T>(t_max_hp t_corpse_name, t_xp, t_flat_resistances, t_mult_resistances);
+			const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
+			const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f }) {
+			m_actor_wip->m_destructible = std::make_unique<T>(t_max_hp ,t_corpse_name, t_xp, t_flat_resistances, t_mult_resistances);
 			return *this;
 		}
 
@@ -69,10 +58,10 @@ public:
 	char m_char;
 	std::string m_name;
 	TCODColor m_color;
-	bool m_proper_noun;  // Whether it's name is a proper nown
-
 	bool m_blocks;    // Can it be walked over?
 	bool m_fov_only;  // Whether it is only seen when in fov or not
+	bool m_proper_noun;  // Whether it's name is a proper nown
+
 	std::unique_ptr<Attacker> m_attacker;          // Deals damage?
 	std::unique_ptr<Destructible> m_destructible;  // Can be damaged?
 	std::unique_ptr<Ai> m_ai;                      // Self-updating?
@@ -85,7 +74,6 @@ public:
 	Actor(const int t_x, const int t_y, const char t_char, const char* t_name,
 		const TCODColor& t_color, const bool t_blocks = true,
 		const bool t_fov_only = true, const bool t_proper_noun = false);
-	~Actor();
 	void update();
 	void render() const;
 	float getDistance(const int t_x, const int t_y) const;

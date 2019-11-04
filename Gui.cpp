@@ -33,7 +33,7 @@ void Gui::render()
     // Draw xp bar
     PlayerAi *p_ai{dynamic_cast<PlayerAi *>(Engine::s_engine->m_player->m_ai.get())};
     char xpTxt[128];
-    sprintf(xpTxt, "XP(%d)", p_ai->m_xp_lvl);
+    sprintf_s(xpTxt, "XP(%d)", p_ai->m_xp_lvl);
     renderBar(1, 5, BAR_WIDTH, xpTxt, (float)Engine::s_engine->m_player->m_destructible->m_xp, (float)p_ai->getNextLevel(), TCODColor::lightViolet, TCODColor::darkViolet);
 
     // Draw the message log
@@ -42,7 +42,7 @@ void Gui::render()
     for (auto it_msg{m_log.begin()}; it_msg < m_log.end(); it_msg++)
     {
         m_con->setDefaultForeground((*it_msg)->m_color * color_coeff);
-        m_con->print(MSG_X, y, (*it_msg)->m_text->c_str());
+        m_con->printf(MSG_X, y, (*it_msg)->m_text->c_str());
         y++;
         if (color_coeff < 1.0f)
         {
@@ -55,7 +55,7 @@ void Gui::render()
 
     // Display dungeon level
     m_con->setDefaultForeground(TCODColor::white);
-    m_con->print(3, 3, "Dungeon level %d", Engine::s_engine->m_level);
+    m_con->printf(3, 3, "Dungeon level %d", Engine::s_engine->m_level);
 
     // Blit the GUI console on the root console
     TCODConsole::blit(m_con.get(), 0, 0, Engine::s_engine->m_screen_w, PANEL_HEIGHT,
@@ -86,7 +86,7 @@ void Gui::renderBar(const int t_x,
 
     // Print the text on top of the bar
     m_con->setDefaultForeground(TCODColor::white);
-    m_con->printEx(t_x + t_width / 2, t_y, TCOD_BKGND_NONE, TCOD_CENTER,
+    m_con->printf(t_x + t_width / 2, t_y, TCOD_BKGND_NONE, TCOD_CENTER,
                    "%s : %g/%g", t_name, t_value, t_max_value);
 }
 
@@ -97,7 +97,7 @@ void Gui::message(const TCODColor &t_color, const char *t_text, ...)
     va_list ap;
     char buffer[128];
     va_start(ap, t_text);
-    vsprintf(buffer, t_text, ap);
+    vsprintf_s(buffer, t_text, ap);
     va_end(ap);
 
     char *line_begin{buffer};
@@ -148,18 +148,18 @@ void Gui::renderMouseLook()
         {
             if (!first)
             {
-                strcat(buffer, ", ");
+                strcat_s(buffer, ", ");
             }
             else
             {
                 first = false;
             }
-            strcat(buffer, (*it_actor)->m_name.c_str());
+            strcat_s(buffer, (*it_actor)->m_name.c_str());
         }
     }
     // Display the list of actors under the mouse cursor
     m_con->setDefaultForeground(TCODColor::lightGrey);
-    m_con->print(1, 0, buffer);
+	m_con->printf(1,0,buffer);
 }
 
 
@@ -234,7 +234,7 @@ Menu::MenuItemCode Menu::pick(const Menu::DisplayMode t_mode)
                 // Set unselected items to light grey
                 TCODConsole::root->setDefaultForeground(TCODColor::lightGrey);
             }
-            TCODConsole::root->print(menu_x, menu_y + current_item * 3, (*it_menu_entry)->m_label.c_str());
+                                                                                                                                                  TCODConsole::root->printf(menu_x, menu_y + current_item * 3, (*it_menu_entry)->m_label.c_str());
             current_item++;
         }
         TCODConsole::flush();

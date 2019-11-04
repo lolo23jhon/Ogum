@@ -1,12 +1,23 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
+#include "PreprocessorDirectives.hpp"
+#include "libtcod.hpp"
+
+
 namespace COL {
 
 	constexpr const TCODColor& PLAYER_MSG_COLOR{ TCODColor::red };
 	constexpr const TCODColor& NORMAL_MSG_COLOR{ TCODColor::lightGrey };
 
 };
+
+enum class ActorPreset { 
+	PLAYER, 
+	ORC, 
+	TROLL 
+};
+
 
 enum class DamageType
 {
@@ -25,14 +36,13 @@ enum class DamageType
 #include <array>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 #include <stdio.h>
 #include <string.h>
 #include <windows.h>
 #pragma comment(lib, "user32.lib")
 
-
-#include "PreprocessorDirectives.hpp"
-#include "libtcod.hpp"
+#include "Utilities.hpp"
 class Actor;
 #include "Persistent.hpp"
 #include "Destructible.hpp"

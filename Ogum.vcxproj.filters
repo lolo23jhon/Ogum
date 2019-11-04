@@ -104,7 +104,7 @@
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\TargetSelector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\utl.hpp">
+    <ClInclude Include="Utilities.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

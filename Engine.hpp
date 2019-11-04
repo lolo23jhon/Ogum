@@ -19,7 +19,7 @@ public:
 	TCOD_mouse_t m_mouse;
 
 	static Engine* s_engine;
-	static TCODRandom* s_rng;	// Non-owning ptr
+	static TCODRandom* s_rng;	// Non-owning ptrs
 
 	enum class GAME_STATUS
 	{
@@ -53,7 +53,7 @@ public:
 	static void messageFirstUpper(const TCODColor& t_color, const char* t_msg, const Args...t_args) {
 		std::string msg{t_msg};
 		msg[0] = toupper(msg[0]);
-		m_gui->message(t_color,msg.c_str(),t_args);
+		s_engine->m_gui->message(t_color,msg.c_str(),t_args...);
 	}
 
 	static void spawActorPreset(const int t_x, const int t_y, const ActorPreset t_actor_preset);
