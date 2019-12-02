@@ -1,7 +1,5 @@
 #ifndef EFFECT_HPP
 #define EFFECT_HPP
-#include <string>
-#include "libtcod/color.hpp"
 
 class Actor;
 

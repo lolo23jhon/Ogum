@@ -5,66 +5,50 @@ Destructible::Destructible(
 	const float t_max_hp,
 	const char* t_corpse_name,
 	const int t_xp,
-	const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_flat_resistances,
-	const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_resistances)
+	const DmgArr& t_flatRes,
+	const DmgArr& t_multRes)
 	: m_max_hp{ t_max_hp },
 	m_hp{ t_max_hp },
 	m_corpse_name{ t_corpse_name },
-	m_xp{ t_xp }
-{
-	for (int i{ 0 }; i < (int)DamageType::MAX_DAMAGE_TYPES; i++)
-	{
-		m_flat_resistances.insert({ (DamageType)i, t_flat_resistances[i] });
-		m_mult_resistances.insert({ (DamageType)i, t_mult_resistances[i] });
-	}
-}
+	m_xp{ t_xp },
+	m_resistanceModel{ t_flatRes, t_multRes }{}
 
-Destructible& Destructible::setFlatResistance(const DamageType t_dmg_type, const float t_value)
+Destructible& Destructible::setFlatResistance(const DamageType t_dmgType, const float t_value)
 {
-	m_flat_resistances[t_dmg_type] = t_value;
+	m_resistanceModel.setFlatRes(t_dmgType, t_value);
 	return *this;
 }
 
-Destructible& Destructible::setFlatResistance(const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_flat_list)
+
+
+Destructible& Destructible::setFlatResistance(const DmgArr& t_values)
 {
-	m_flat_resistances.clear();
-	for (int i{ 0 }; i < (int)DamageType::MAX_DAMAGE_TYPES; i++)
-	{
-		m_flat_resistances.insert({ (DamageType)i, t_flat_list[i] });
-	}
+	m_resistanceModel.setFlatRes(t_values);
 	return *this;
 }
 
-Destructible& Destructible::setMultResistance(const DamageType t_dmg_type, const float t_mult)
+Destructible& Destructible::setMultResistance(const DamageType t_dmgType, const float t_value)
 {
-	m_mult_resistances[t_dmg_type] = t_mult;
+	m_resistanceModel.setMultRes(t_dmgType, t_value);
 	return *this;
 }
 
-Destructible& Destructible::setMultResistance(const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_list)
+Destructible& Destructible::setMultResistance(const DmgArr& t_values)
 {
-	m_mult_resistances.clear();
-	for (int i{ 0 }; i < (int)DamageType::MAX_DAMAGE_TYPES; i++)
-	{
-		m_mult_resistances.insert({ (DamageType)i, t_mult_list[i] });
-	}
+	m_resistanceModel.setMultRes(t_values);
 	return *this;
 }
 
-float Destructible::takeDamage(Actor* t_owner, const DamageType t_damage_type, float t_damage)
-{
-	t_damage -= m_flat_resistances[t_damage_type];
-	t_damage *= m_mult_resistances[t_damage_type];
-	if (t_damage > 0)
-	{
+float Destructible::takeDamage(Actor* t_owner, const DamageType t_damage_type, float t_damage) {
+	t_damage = m_resistanceModel.reduceDamge(t_damage_type, t_damage);
+
+	if (t_damage > 0) {
 		m_hp -= t_damage;
-		if (m_hp <= 0)
-		{
+		if (m_hp <= 0) {
 			die(t_owner);
 		}
 	}
-	else
-	{
+	else {
 		t_damage = 0;
 	}
 	return t_damage;
@@ -94,8 +78,8 @@ float Destructible::heal(float t_amount)
 }
 
 
-MonsterDestructible::MonsterDestructible(const float t_max_hp, const char* t_corpse_name, const int t_xp, const std::array < const float, (int)DamageType::MAX_DAMAGE_TYPES> & t_flat_resistances, const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_resistances)
-	: Destructible(t_max_hp, t_corpse_name,t_xp,t_flat_resistances, t_mult_resistances){}
+MonsterDestructible::MonsterDestructible(const float t_max_hp, const char* t_corpse_name, const int t_xp, const DmgArr& t_flat_resistances, const DmgArr& t_mult_resistances)
+	: Destructible(t_max_hp, t_corpse_name, t_xp, t_flat_resistances, t_mult_resistances) {}
 
 void MonsterDestructible::die(Actor* t_owner)
 {
@@ -106,8 +90,9 @@ void MonsterDestructible::die(Actor* t_owner)
 }
 
 
-PlayerDestructible::PlayerDestructible(const float t_max_hp, const char* t_corpse_name, const int t_xp, const std::array < const float, (int)DamageType::MAX_DAMAGE_TYPES >& t_flat_resistances, const std::array < const float, (int)DamageType::MAX_DAMAGE_TYPES > & t_mult_resistances)
-	: Destructible(t_max_hp, t_corpse_name, t_xp,t_flat_resistances, t_mult_resistances) {}
+PlayerDestructible::PlayerDestructible(const float t_max_hp, const char* t_corpse_name, const int t_xp, const DmgArr& t_flat_resistances, const DmgArr& t_mult_resistances)
+	: Destructible(t_max_hp, t_corpse_name, t_xp, t_flat_resistances, t_mult_resistances) {}
+
 
 
 void PlayerDestructible::die(Actor* t_owner)

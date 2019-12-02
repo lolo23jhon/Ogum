@@ -23,6 +23,7 @@
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Ai.cpp" />
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Attacker.cpp" />
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Container.cpp" />
+    <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Damage.cpp" />
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Destructible.cpp" />
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Effect.cpp" />
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Engine.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Ai.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Attacker.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Container.hpp" />
+    <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Damage.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Destructible.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Effect.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Engine.hpp" />
@@ -50,6 +52,7 @@
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Pickable.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\PreprocessorDirectives.hpp" />
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\TargetSelector.hpp" />
+    <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\typedefs.hpp" />
     <ClInclude Include="Utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -107,19 +110,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LibraryPath>C:\Users\sam%27s club\source\repos\Ogum;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\sam's club\source\repos\Ogum;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\C++ Libaries\libtcod-master\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LibraryPath>C:\Users\sam%27s club\source\repos\Ogum;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\sam's club\source\repos\Ogum;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\C++ Libaries\libtcod-master\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>C:\Users\sam%27s club\source\repos\Ogum;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\sam's club\source\repos\Ogum;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\C++ Libaries\libtcod-master\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>C:\Users\sam%27s club\source\repos\Ogum;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\sam's club\source\repos\Ogum;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\C++ Libaries\libtcod-master\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -129,9 +132,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalIncludeDirectories>C:\C++ Libaries\libtcod-master\src;C:\C++ Libaries\libtcod-master\src\libtcod;C:\C++ Libaries\libtcod-master\src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>libtcod.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\sam%27s club\source\repos\Ogum;C:\C++ Libaries\libtcod-master\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -141,9 +147,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalIncludeDirectories>C:\C++ Libaries\libtcod-master\src;C:\C++ Libaries\libtcod-master\src\libtcod;C:\C++ Libaries\libtcod-master\src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>libtcod.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\sam%27s club\source\repos\Ogum;C:\C++ Libaries\libtcod-master\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,11 +164,14 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalIncludeDirectories>C:\C++ Libaries\libtcod-master\src;C:\C++ Libaries\libtcod-master\src\libtcod;C:\C++ Libaries\libtcod-master\src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libtcod.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\sam%27s club\source\repos\Ogum;C:\C++ Libaries\libtcod-master\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -171,11 +183,14 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalIncludeDirectories>C:\C++ Libaries\libtcod-master\src;C:\C++ Libaries\libtcod-master\src\libtcod;C:\C++ Libaries\libtcod-master\src\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libtcod.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\sam%27s club\source\repos\Ogum;C:\C++ Libaries\libtcod-master\src;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

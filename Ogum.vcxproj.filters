@@ -54,6 +54,9 @@
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\TargetSelector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Damage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Actor.hpp">
@@ -105,6 +108,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utilities.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Damage.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\typedefs.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,5 @@
 #ifndef UTILITIES_HPP
 #define UTILITIES_HPP
-#include <string>
-#include <math.h>
 
 namespace utils
 {
@@ -28,6 +26,14 @@ static bool fexists(const char* t_fileName) {
 	std::ifstream ifile(t_fileName);
 	return (bool)ifile;
 }
+
+template <size_t N, class T>
+std::array<T, N> make_array(const T& v) {
+	std::array<T, N> ret;
+	ret.fill(v);
+	return std::move(ret);
+}
+
 
 }; // namespace utils
 #endif

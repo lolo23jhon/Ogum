@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-Container::Container(const int t_size) : m_size{t_size} {}
+Container::Container(const unsigned int t_size) : m_size{t_size} {}
 
 
 Container::~Container() {}

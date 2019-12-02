@@ -2,7 +2,7 @@
 
 
 Engine* Engine::s_engine{ nullptr };
-TCODRandom* s_rng{ TCODRandom::getInstance() };
+TCODRandom* Engine::s_rng{ TCODRandom::getInstance() };
 
 
 Engine::Engine(const int t_screen_w, const int t_screen_h)

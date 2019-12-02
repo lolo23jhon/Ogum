@@ -1,8 +1,10 @@
 #include "main.hpp"
 
 
-Attacker::Attacker(const DamageType t_damage_type, const char* t_dice, const char* t_verb)
-	: m_damage_type{ t_damage_type }, m_dice{Engine::s_rng->dice(t_dice)}, m_msg_verb{ t_verb } {}
+
+
+Attacker::Attacker(const DamageType t_dmgType, const TCOD_dice_t t_dice, const char* t_verb) : m_attack{t_dmgType,t_dice,t_verb} {}
+
 
 void Attacker::attack(Actor* t_owner, Actor* t_target)
 {
@@ -11,17 +13,17 @@ void Attacker::attack(Actor* t_owner, Actor* t_target)
 	{
 		const TCODColor& msg_color{ Engine::s_engine->m_player == t_target ? COL::PLAYER_MSG_COLOR : COL::NORMAL_MSG_COLOR };
 
-		TCODRandom* rng{ TCODRandom::getInstance() };
+		auto rng = Engine::s_rng;
 		bool hit{ true };
 
 		// Did the attack land?
 		if (hit) {
 
 			// Roll for damage (from the attack, without any other calculation)
-			float dmg{ (float)rng->diceRoll(m_dice) };
+			float dmg{ (float)m_attack.rollDmg() };
 
 			// Damage calcuation
-			dmg = t_target->m_destructible->takeDamage(t_target, m_damage_type, dmg);
+			dmg = t_target->m_destructible->takeDamage(t_target, m_attack.dmgType(), dmg);
 
 			if (dmg > 0) {
 
@@ -30,7 +32,7 @@ void Attacker::attack(Actor* t_owner, Actor* t_target)
 					"%s%s %s %s%s for %d hit points.",
 					t_owner->m_proper_noun ? "" : "the ",
 					t_owner->m_name.c_str(),
-					m_msg_verb.c_str(),
+					m_attack.verb().c_str(),
 					t_target->m_proper_noun ? "" : "the ",
 					t_target->m_name.c_str(),
 					dmg);
@@ -59,10 +61,3 @@ void Attacker::attack(Actor* t_owner, Actor* t_target)
 	}
 
 }
-
-RangedAttacker::RangedAttacker(const  DamageType t_damage_type, const char* t_dice, const char* t_verb, const float t_range)
-	: Attacker(t_damage_type, t_dice, t_verb), m_range{ t_range } {}
-
-
-MeleeAttacker::MeleeAttacker(const DamageType t_damage_type, const char* t_dice, const char* t_verb)
-	: Attacker(t_damage_type, t_dice, t_verb) {}

@@ -274,8 +274,8 @@ Actor *PlayerAi::chooseFromInventory(Actor *t_owner)
     if (key.vk == TCODK_CHAR)
     {
         // Subtract the entered letter with the starting symbol (a) to get the correct index
-         int itemIndex{key.c - 'a'};
-        if (itemIndex >= 0 && itemIndex < t_owner->m_container->m_inventory.size())
+        int itemIndex{key.c - 'a'};
+        if (itemIndex >= 0 && (unsigned int)itemIndex < t_owner->m_container->m_inventory.size())
         {
             return t_owner->m_container->m_inventory[itemIndex].get();
         }

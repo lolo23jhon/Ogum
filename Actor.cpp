@@ -45,14 +45,14 @@ float Actor::getDistance(const int t_x, const int t_y) const
 Actor::Builder::Builder() {}
 
 
-Actor::Builder& Actor::Builder::createActor( const int t_x, const int t_y, const ActorPreset t_preset)
+Actor::Builder& Actor::Builder::createActor(const int t_x, const int t_y, const ActorPreset t_preset)
 {
 	switch (t_preset)
 	{
 	case ActorPreset::PLAYER:
 	{
 		createActor(t_x, t_y, '@', "player", TCODColor::white, true, true)
-			.setAttacker<MeleeAttacker>(DamageType::PHYSICAL, "2d2", "punched")
+			.setAttack(DamageType::PHYSICAL, "2d2", "punched")
 			.setDestructible<PlayerDestructible>(30.0f, "your corpse", 0)
 			.setAi<PlayerAi>()
 			.setContainer(26);
@@ -61,7 +61,7 @@ Actor::Builder& Actor::Builder::createActor( const int t_x, const int t_y, const
 	case ActorPreset::ORC:
 	{
 		createActor(t_x, t_y, 'o', "orc", TCODColor::desaturatedGreen, true, true)
-			.setAttacker<MeleeAttacker>(DamageType::PHYSICAL, "1d3", "scratched")
+			.setAttack(DamageType::PHYSICAL, "1d3", "scratched")
 			.setDestructible<MonsterDestructible>(10.0f, "dead orc", 35)
 			.setAi<MonsterAi>();
 
@@ -69,7 +69,7 @@ Actor::Builder& Actor::Builder::createActor( const int t_x, const int t_y, const
 	case ActorPreset::TROLL:
 	{
 		createActor(t_x, t_y, 'T', "troll", TCODColor::desaturatedGreen, true, true)
-			.setAttacker<MeleeAttacker>(DamageType::PHYSICAL, "1d4", "clubed")
+			.setAttack(DamageType::PHYSICAL, "1d4", "clubed")
 			.setDestructible<MonsterDestructible>(20.0f, "troll carcass", 100)
 			.setAi<MonsterAi>();
 
@@ -83,6 +83,18 @@ Actor::Builder& Actor::Builder::createActor( const int t_x, const int t_y, const
 Actor::Builder& Actor::Builder::createActor(const int t_x, const int t_y, const char t_char, const char* t_name, const TCODColor& t_color, const bool t_blocks, const bool t_fov_only)
 {
 	m_actor_wip = std::make_unique<Actor>(t_x, t_y, t_char, t_name, t_color, t_blocks, t_fov_only);
+	return *this;
+}
+
+Actor::Builder& Actor::Builder::setAttack(DamageType t_dmgType, TCOD_dice_t t_dice, const char* t_verb)
+{
+	m_actor_wip->m_attacker = std::make_unique<Attacker>(t_dmgType,t_dice,t_verb);
+	return *this;
+}
+
+Actor::Builder& Actor::Builder::setAttack(DamageType t_dmgType, const char* t_dice, const char* t_verb)
+{
+	m_actor_wip->m_attacker = std::make_unique<Attacker>(t_dmgType,Engine::s_rng->dice(t_dice),t_verb);
 	return *this;
 }
 

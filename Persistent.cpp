@@ -1,7 +1,7 @@
 #include "main.hpp"
 
 
-//================================================== MAP ==================================================//
+//-------------------------------------------------- MAP --------------------------------------------------//
 
 void Map::load(TCODZip& t_zip)
 {
@@ -26,8 +26,8 @@ void Map::save(TCODZip& t_zip)
 	}
 }
 
-//================================================== map ==================================================//
-//================================================== ACTOR ==================================================//
+//-------------------------------------------------- map --------------------------------------------------//
+//-------------------------------------------------- ACTOR --------------------------------------------------//
 
 void Actor::load(TCODZip& t_zip)
 {
@@ -112,8 +112,8 @@ void Actor::save(TCODZip& t_zip)
 	}
 }
 
-//================================================== actor ==================================================//
-//================================================== CONTAINER ==================================================//
+//-------------------------------------------------- actor --------------------------------------------------//
+//-------------------------------------------------- CONTAINER --------------------------------------------------//
 
 void Container::load(TCODZip& t_zip)
 {
@@ -137,8 +137,8 @@ void Container::save(TCODZip& t_zip)
 	}
 }
 
-//================================================== container ==================================================//
-//================================================== DESTRUCTIBLE ==================================================//
+//-------------------------------------------------- container --------------------------------------------------//
+//-------------------------------------------------- DESTRUCTIBLE --------------------------------------------------//
 
 void Destructible::load(TCODZip& t_zip)
 {
@@ -146,10 +146,10 @@ void Destructible::load(TCODZip& t_zip)
 	m_hp = t_zip.getFloat();
 	m_corpse_name = t_zip.getString();
 	m_xp = t_zip.getInt();
-
+	m_resistanceModel = ResistanceModel();
 	for (int i{ 0 }; i < (int)DamageType::MAX_DAMAGE_TYPES; i++) {
-		m_flat_resistances[(DamageType)i] = t_zip.getFloat();
-		m_mult_resistances[(DamageType)i] = t_zip.getFloat();
+		m_resistanceModel.setFlatRes((DamageType)i, t_zip.getFloat());
+		m_resistanceModel.setMultRes((DamageType)i, t_zip.getFloat());
 	}
 }
 
@@ -161,8 +161,8 @@ void Destructible::save(TCODZip& t_zip)
 	t_zip.putInt(m_xp);
 
 	for (int i{ 0 }; i < (int)DamageType::MAX_DAMAGE_TYPES; i++) {
-		t_zip.putFloat(m_flat_resistances[(DamageType)i]);
-		t_zip.putFloat(m_mult_resistances[(DamageType)i]);
+		t_zip.putFloat(m_resistanceModel.flatRes((DamageType)i));
+		t_zip.putFloat(m_resistanceModel.dmgMult((DamageType)i));
 	}
 }
 
@@ -185,92 +185,72 @@ std::unique_ptr<Destructible> Destructible::create(TCODZip& t_zip)
 	switch (type)
 	{
 	case DestructibleType::MONSTER:
-		destructible = std::make_unique<MonsterDestructible>(0.0f, 0.0f, "", 0);
+		destructible = std::make_unique<MonsterDestructible>(0.0f, "", 0, make_DmgArr(0.0f), make_DmgArr(1.0f));
 		break;
 	case DestructibleType::PLAYER:
-		destructible = std::make_unique<PlayerDestructible>(0.0f, 0.0f, "");
+		destructible = std::make_unique<PlayerDestructible>(0.0f, "", 0, make_DmgArr(0.0f), make_DmgArr(1.0f));
 		break;
 	};
 	destructible->load(t_zip);
 	return std::move(destructible);
 }
 
-//================================================== destructible ==================================================//
-//================================================== ATTACKER ==================================================//
+//-------------------------------------------------- destructible --------------------------------------------------//
+//-------------------------------------------------- ATTACK --------------------------------------------------//
 
-void Attacker::load(TCODZip& t_zip)
-{
-	// Load dice
-	m_dice.nb_rolls = t_zip.getInt();
-	m_dice.nb_faces = t_zip.getInt();
-	m_dice.multiplier = t_zip.getFloat();
-	m_dice.addsub = t_zip.getFloat();
 
-	// Load attack verb
-	m_msg_verb = t_zip.getString();
-}
+void Attack::save(TCODZip& t_zip) {
+	// Save dmg type
+	t_zip.putInt((int)m_dmgType);
 
-void Attacker::save(TCODZip& t_zip)
-{
-	// Save damage type
-	t_zip.putInt((int)m_damage_type);
+	// Save verb str
+	t_zip.putString(m_verb.c_str());
 
 	// Save dice
 	t_zip.putInt(m_dice.nb_rolls);
 	t_zip.putInt(m_dice.nb_faces);
 	t_zip.putFloat(m_dice.multiplier);
 	t_zip.putFloat(m_dice.addsub);
-
-
-	// Save attack verb
-	t_zip.putString(m_msg_verb.c_str());
 }
 
-void MeleeAttacker::save(TCODZip& t_zip) {
-	t_zip.putInt((int)AttackerType::MELEE);
-	Attacker::save(t_zip);
+void Attack::load(TCODZip& t_zip) {
+	// Load dmg type
+	m_dmgType = (DamageType)t_zip.getInt();
 
+	// Load verb str
+	m_verb = t_zip.getString();
+
+	// Load dice
+	m_dice.nb_rolls = t_zip.getInt();
+	m_dice.nb_faces = t_zip.getInt();
+	m_dice.multiplier = t_zip.getFloat();
+	m_dice.addsub = t_zip.getFloat();
 }
 
-void RangedAttacker::save(TCODZip& t_zip) {
-	t_zip.putInt((int)AttackerType::RANGED);
-	Attacker::save(t_zip);
-	t_zip.putFloat(m_range);
+//-------------------------------------------------- attack --------------------------------------------------//
+//-------------------------------------------------- ATTACKER --------------------------------------------------//
 
+void Attacker::load(TCODZip& t_zip)
+{
+	m_attack = Attack(DamageType::MAX_DAMAGE_TYPES, TCOD_dice_t(), "");
+	m_attack.load(t_zip);
 }
 
-void RangedAttacker::load(TCODZip& t_zip) {
-	Attacker::load(t_zip);
-	m_range = t_zip.getFloat();
+void Attacker::save(TCODZip& t_zip)
+{
+	m_attack.save(t_zip);
 }
-
 
 
 std::unique_ptr<Attacker> Attacker::create(TCODZip& t_zip) {
 
-	AttackerType attackerType{ (AttackerType)t_zip.getInt() };
-	std::unique_ptr<Attacker> attacker{ nullptr };
-
-	switch (attackerType) {
-	case AttackerType::MELEE: {
-
-		attacker = std::make_unique<MeleeAttacker>(AttackerType::PLACEHOLDER_TYPE,"","");
-	
-	}; break; // case AttackerType::MELEE
-	case AttackerType::RANGED: {
-
-		attacker = std::make_unique<RangedAttacker>(AttackerType::PLACEHOLDER_TYPE, "", "",0.0f);
-
-	}; break; // AttackerType::RANGED
-	};
-
+	std::unique_ptr<Attacker> attacker{ std::make_unique<Attacker>(DamageType::MAX_DAMAGE_TYPES, TCOD_dice_t(), "") };
 	attacker->load(t_zip);
 	return std::move(attacker);
-
 }
 
-//================================================== attacker ==================================================//
-//================================================== AI ==================================================//
+//-------------------------------------------------- attacker --------------------------------------------------//
+//-------------------------------------------------- AI --------------------------------------------------//
 
 void MonsterAi::load(TCODZip& t_zip)
 {
@@ -322,8 +302,8 @@ std::unique_ptr<Ai> Ai::create(TCODZip& t_zip)
 	return std::move(ai);
 }
 
-//================================================== ai ==================================================//
-//================================================== PICKABLE ==================================================//
+//-------------------------------------------------- ai --------------------------------------------------//
+//-------------------------------------------------- PICKABLE --------------------------------------------------//
 
 void Healer::load(TCODZip& t_zip)
 {
@@ -389,8 +369,8 @@ std::unique_ptr<Pickable> Pickable::create(TCODZip& t_zip)
 	return std::move(pickable);
 }
 
-//================================================== pickable ==================================================//
-//================================================== GUI ==================================================//
+//-------------------------------------------------- pickable --------------------------------------------------//
+//-------------------------------------------------- GUI --------------------------------------------------//
 
 void Gui::save(TCODZip& t_zip)
 {
@@ -414,8 +394,8 @@ void Gui::load(TCODZip& t_zip)
 	}
 }
 
-//================================================== gui ==================================================//
-//================================================== ENGINE ==================================================//
+//-------------------------------------------------- gui --------------------------------------------------//
+//-------------------------------------------------- ENGINE --------------------------------------------------//
 const int SAVEGAME_VERSION{ 0x1100 };
 void Engine::load(const bool t_pause)
 {
@@ -529,4 +509,4 @@ void Engine::save()
 	}
 }
 
-//================================================== engine ==================================================//
+//-------------------------------------------------- engine --------------------------------------------------//

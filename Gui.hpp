@@ -1,9 +1,5 @@
 #ifndef GUI_HPP
 #define GUI_HPP
-#include <memory>
-#include <vector>
-#include <stdarg.h>
-#include "libtcod/color.hpp"
 
 class Engine;
 class TCODConsole;

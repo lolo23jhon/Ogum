@@ -18,19 +18,16 @@ public:
 			const bool t_blocks = true,
 			const bool t_fov_only = true);
 
-		template <typename T, typename T1, typename... Args>
-		Builder& setAttacker(const T1 t_first, const Args... t_args) {
-			m_actor_wip->m_attacker = std::make_unique<T>(t_first, t_args...);
-			return *this;
-		}
+		Builder& setAttack(DamageType t_dmgType, TCOD_dice_t t_dice, const char* t_verb);
+		Builder& setAttack(DamageType t_dmgType, const char* t_dice, const char* t_verb);
 
 		template <typename T>
 		Builder& setDestructible(const float t_max_hp,
 			const char* t_corpse_name,
 			const int t_xp,
-			const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_flat_resistances = { 0.0f, 0.0f, 0.0f, 0.0f },
-			const std::array<const float, (int)DamageType::MAX_DAMAGE_TYPES>& t_mult_resistances = { 1.0f, 1.0f, 1.0f, 1.0f }) {
-			m_actor_wip->m_destructible = std::make_unique<T>(t_max_hp ,t_corpse_name, t_xp, t_flat_resistances, t_mult_resistances);
+			const DmgArr& t_flat_resistances = make_DmgArr(0.0f),
+			const DmgArr& t_mult_resistances = make_DmgArr(1.0f)) {
+			m_actor_wip->m_destructible = std::make_unique<T>(t_max_hp, t_corpse_name, t_xp, t_flat_resistances, t_mult_resistances);
 			return *this;
 		}
 
