@@ -4,6 +4,6 @@
 #define LOG_CHARACTER_UPDATES 0
 #define LOG_ATTACKS 1
 #define LOG_FPS 0
-#define CONSOLE_WINDOW 1
+#define CONSOLE_WINDOW 0
 
 #endif

@@ -33,8 +33,6 @@
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Persistent.cpp" />
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Pickable.cpp" />
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\TargetSelector.cpp" />
-    <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Weapon.cpp" />
-    <ClCompile Include="Weapon.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Actor.hpp" />
