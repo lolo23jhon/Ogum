@@ -57,6 +57,12 @@
     <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Damage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon.hpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\sam%27s club\source\repos\Ogum\Weapon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\sam%27s club\source\repos\Ogum\Actor.hpp">
